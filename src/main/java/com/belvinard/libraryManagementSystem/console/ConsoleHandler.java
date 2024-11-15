@@ -465,14 +465,14 @@ public class ConsoleHandler {
         }
 
         // Return to the main menu
-        System.out.println("\n----- The Library Management System Portal -----");
+        /* System.out.println("\n----- The Library Management System Portal -----");
         System.out.println("Press 1 for Adding Book");
         System.out.println("Press 2 for Displaying All Books");
         System.out.println("Press 3 for Updating Book");
         System.out.println("Press 4 for Removing Book");
         System.out.println("Press 5 for Searching Book");
         System.out.println("Press 6 for Sorting Book");
-        System.out.println("Press 7 for Exiting the portal");
+        System.out.println("Press 7 for Exiting the portal"); */
     }
     /*
      * =============================Sort book ends =============================

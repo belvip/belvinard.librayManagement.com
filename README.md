@@ -178,4 +178,3 @@ By mastering these skills, you've built a robust and user-friendly update functi
 
 
 
-Please list the various skills learned during this stage for Sortining book in markdown format wit emojolis

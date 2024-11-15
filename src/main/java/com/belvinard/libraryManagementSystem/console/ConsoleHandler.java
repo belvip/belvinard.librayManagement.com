@@ -69,12 +69,12 @@ public class ConsoleHandler {
         scanner.nextLine();  // Consume newline
 
         // Debugging output to see the values entered
-        System.out.println("\n========= Details Book entered !: ========== \n");
-        System.out.println("Title: " + title);
-        System.out.println("Author: " + author);
-        System.out.println("Genre: " + genre);
-        System.out.println("ISBN: " + isbn);
-        System.out.println("Year: " + year);
+        System.out.println("\n========= Details Book entered : ========== \n");
+        System.out.println("Book Title: " + title);
+        System.out.println("Book Author: " + author);
+        System.out.println("Book Genre: " + genre);
+        System.out.println("Book ISBN: " + isbn);
+        System.out.println("Book Year: " + year);
 
         try {
             Book book = new Book();

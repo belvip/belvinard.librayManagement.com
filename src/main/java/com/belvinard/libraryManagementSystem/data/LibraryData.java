@@ -29,7 +29,7 @@ public class LibraryData {
 
             if (exists) {
                 // Throw an exception or display a message indicating ISBN conflict
-                throw new IllegalArgumentException("A book with this ISBN already exists.");
+                throw new IllegalArgumentException("A book with ISBN " + book.getISBN() + " already exists.");
             }
 
             // If ISBN is unique, add the book to the collection

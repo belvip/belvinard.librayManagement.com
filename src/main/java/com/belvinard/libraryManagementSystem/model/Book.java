@@ -42,11 +42,19 @@ public class Book {
     }
 
     public void setAuthor(String author) {
-        if (author == null || !Pattern.matches("^[a-zA-Z]+([\\s][a-zA-Z]+)*$", author)) {
+        if (author == null || author.trim().isEmpty()) {
+            throw new IllegalArgumentException("Author cannot be empty.");
+        }
+        // Ensure the author is at least 3 characters long
+        if (author.length() < 3) {
+            throw new IllegalArgumentException("Author name must be at least 3 characters long.");
+        }
+        if (!Pattern.matches("^[a-zA-Z]+([\\s][a-zA-Z]+)*$", author)) {
             throw new IllegalArgumentException("Invalid author format. Only alphabetic characters and spaces are allowed.");
         }
         this.author = author;
     }
+
 
     public void setISBN(String ISBN) {
         if (ISBN == null || !Pattern.matches("\\d{5}", ISBN)) {

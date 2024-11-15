@@ -67,4 +67,11 @@ public class LibraryData {
     public List<Book> getAllBooks() {
         return new ArrayList<>(bookCollection); // Return a copy for immutability
     }
+
+    // Add this getter method
+    public List<Book> getBookCollection() {
+        return bookCollection;
+    }
+
+
 }

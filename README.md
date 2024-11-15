@@ -1,136 +1,55 @@
-# Library Management System 📚
+### Skills Learned in the First Stage for Adding a Book
 
-Welcome to the Library Management System! This simple Java application allows you to manage books in a library, including adding new books to the system.
+- 🔹 **Basic Java Object Creation**: Learned to create Java objects with attributes, including a constructor and parameterized constructors.
+- 🔹 **Input Validation**: Developed custom setters with validation checks for attributes like `title`, `author`, `ISBN`, `genre`, and `publicationYear`.
+- 🔹 **Exception Handling**: Implemented `IllegalArgumentException` for input errors, including meaningful error messages for each case.
+- 🔹 **Using Regular Expressions**: Leveraged regular expressions (`Pattern.matches`) to validate text inputs, such as titles, authors, and ISBNs.
+- 🔹 **Implementing Business Rules**: Enforced business rules (e.g., disallow duplicate ISBNs, validate specific genres).
+- 🔹 **Console-Based User Interaction**: Built a simple, user-friendly console interface with input prompts and feedback messages.
+- 🔹 **Data Storage with Collections**: Utilized `ArrayList` to store book objects in memory.
+- 🔹 **Formatted Output with `toString()`**: Customized the `toString()` method to display book details in a readable format.
+- 🔹 **Looping and Conditionals for Menu Navigation**: Used `while` loops and `switch` cases to manage user choices and keep the application running until the user exits.
+- 🔹 **Error Handling for Duplicate Entries**: Created logic to check for existing ISBNs before adding a book and display appropriate error messages.
 
-## Table of Contents 📝
+These skills provide a strong foundation for developing a robust book management system!
 
-1. [Introduction](#introduction)
-2. [Technologies Used](#technologies-used)
-3. [How to Run](#how-to-run)
-4. [System Overview](#system-overview)
-   - [Packages & Classes](#packages--classes)
-5. [Step 1: Add a Book 📖](#step-1-add-a-book-)
-6. [Conclusion](#conclusion)
+# Skills Learned During the "Display All Books" Stage 📚
 
----
+## General Programming Skills
+- ✅ **Creating and Using Getter Methods**: Learned to expose private fields safely using public getter methods.
+- ✅ **Iterating Over Collections**: Practiced iterating over a list of objects (`List<Book>`) to display each item.
+- ✅ **Testing Application Features**: Verified the functionality of methods through manual testing and debugging.
 
-## Introduction 🤖
+## Java-Specific Skills
+- 🛠 **Working with Java Collections**: Used `ArrayList` and `List` to store and retrieve objects.
+- 🛠 **Implementing Methods in Classes**: Added specific methods in the `LibraryData` and `BookService` classes to support functionality.
+- 🛠 **Encapsulation and Data Access**: Applied the principle of encapsulation to protect data and expose it through well-defined interfaces.
 
-This application helps you manage books in a library with a focus on adding new books to the library database.
+## Spring Framework Skills
+- 🌱 **Defining Components**: Utilized `@Component` to define Spring-managed beans for dependency injection.
+- 🌱 **Managing Dependencies**: Connected `LibraryData` and `BookService` components in a structured manner.
 
-### Features
-- Add a book to the library
-- Store book details such as title, author, genre, ISBN, and publication year
+## Debugging and Problem-Solving Skills
+- 🐛 **Resolving "Cannot Find Symbol" Errors**: Identified and fixed missing method definitions by adding the required getter.
+- 🐛 **Refining Logic**: Adjusted the code to correctly retrieve and display stored books.
+- 🐛 **Testing Edge Cases**: Ensured that no duplicate books with the same ISBN were displayed.
 
----
+## Console-Based UI Skills
+- 💻 **Designing User Menus**: Created a user-friendly console menu to display book options.
+- 💻 **Output Formatting**: Enhanced readability of book details using `toString()` formatting in the `Book` class.
 
-## Technologies Used 🛠️
+## Object-Oriented Programming (OOP) Concepts
+- 📦 **Separation of Concerns**: Separated data handling, business logic, and presentation layers into distinct classes.
+- 📦 **Reusable Methods**: Designed a reusable `displayAllBooks` method in `ConsoleHandler`.
 
-- **Java 8+** for development
-- **Spring Framework** for dependency injection and managing beans
-- **Scanner** for user input handling in the console
-
----
-
-## How to Run 🏃
-
-Follow these steps to set up and run the Library Management System project on your local machine:
-
-### 1. Clone the Repository
-
-First, clone the project to your local machine:
-
-```bash
-   git clone https://github.com/belvip/Belvi.com.libraryManagementSystem.git
-```
-
-*This will download all the project files to a folder named LibraryManagementSystem.*
-
-### 📂 Build the project using Maven:
-
-Navigate to the project’s root directory, then use Maven to build the project:
-
-```bash
-   cd LibraryManagementSystem
-   mvn clean install
-
-```
-
-*This command will launch the console-based interface, allowing you to interact with the library system directly in your terminal.*
-
-### 📚 License:
-
-This project is licensed under the MIT License - see the LICENSE file for more details.
+## Communication and Validation
+- 📢 **Meaningful Output Messages**: Displayed clear messages for users, such as success notifications and book details.
+- 📢 **Edge Case Handling**: Ensured that the application gracefully handled invalid data.
 
 ---
-
-## System Overview 🌍
-
-This application is structured in multiple packages, each with a specific role to ensure that the system is modular, maintainable, and scalable.
-
-## Packages & Classes 📦
-
-### `com.belvinard.libraryManagementSystem.model` - **Book Class**
-- **Description**: This package contains the `Book` class, which represents the entity for books in the library system.
-- **Attributes**: `title`, `author`, `ISBN`, `publicationYear`, `genre`
-- **Validation**: Handles input validation, such as:
-  - Ensuring the book title is at least 3 characters long.
-  - Verifying that the `ISBN` is a 5-digit number.
-  - Checking that the author's name contains only alphabetic characters.
-- **Validation Example**: 
-  - The title must have at least 3 characters.
-  - The genre must be one of the predefined values (e.g., "Fiction", "Non-Fiction").
-
-### `com.belvinard.libraryManagementSystem.data` - **LibraryData Class**
-- **Description**: This package handles the collection of books. The `LibraryData` class stores a list of books and provides methods for managing the collection.
-- **Functionality**: Adds books to the internal list, `bookCollection`.
-
-### `com.belvinard.libraryManagementSystem.service` - **BookService Class**
-- **Description**: This package contains the `BookService` class, which interacts with the data layer (`LibraryData`).
-- **Functionality**: The service layer ensures separation of business logic (e.g., adding books) from the presentation layer.
-- **Dependencies**: `LibraryData` is injected into `BookService` to handle book management.
-
-### `com.belvinard.libraryManagementSystem.config` - **LibraryConfig Class**
-- **Description**: This package sets up the Spring configuration, defining beans for `LibraryData` and `BookService`, making them available for dependency injection.
-- **Functionality**: Uses `@Bean` annotations to define application configuration and manage dependencies between classes.
-
-### `com.belvinard.libraryManagementSystem.console` - **ConsoleHandler Class**
-- **Description**: This package contains the `ConsoleHandler` class, which provides user interaction via the console.
-- **Functionality**: Displays the menu, takes user input, and calls relevant methods in `BookService` to perform actions like adding books.
-
-### `com.belvinard.libraryManagementSystem` - **LibraryManagementSystemApplication Class**
-- **Description**: The main entry point for the application, initializing the system and starting the console interface for user interaction.
-
----
-
-# Step 1: Add a Book 📖
-
-The first feature of the system allows you to add a new book to the library. Follow the steps below:
-
-### 🚀 Launch the Application
-Run the `LibraryManagementSystemApplication` class to start the application.
-
-### 📋 Console Menu
-Once the application starts, you will see the following menu in the console:
-
-================= Library Management System =================
-
-- Add Book
-- Exit
-- Enter your choice:
+🌟 **These skills provide a strong foundation for creating robust and maintainable applications. Great job progressing in your project!**
 
 
-### 📘 Add a Book
-Select option **1** to add a book. You will be prompted to enter the following details:
 
-- **Book Title**: Enter the title of the book (must be at least 3 characters long).
-- **Author**: Enter the author’s name (only alphabetic characters are allowed).
-- **Genre**: Enter the genre (must be one of the predefined values like "Fiction", "Non-Fiction", etc.).
-- **ISBN**: Enter the ISBN (must be exactly 5 digits).
-- **Publication Year**: Enter the publication year (must be between 1000 and the current year).
 
-### ✅ Successful Addition
-After entering the details, the book will be added to the system. If any input is invalid, an error message will be displayed, and the user will be prompted to try again.
-
----
-
+Please list the various skills learned during this first stage for displaying book in markdown format wit emojolis

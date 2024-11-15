@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 @Data
@@ -13,6 +14,10 @@ import java.util.Scanner;
 public class ConsoleHandler {
     private final BookService bookService;
     private final Scanner scanner;
+
+    /*
+    * ============================= Console starts =============================
+    */
 
     /**
      * Starts the console-based library management system.
@@ -30,6 +35,12 @@ public class ConsoleHandler {
                     addBook();
                     break;
                 case 2:
+                    displayAllBooks();
+                    break;
+                case 3:
+                    updateBook();
+                    break;
+                case 4:
                     running = false;
                     System.out.println("Exiting the system...");
                     break;
@@ -39,17 +50,39 @@ public class ConsoleHandler {
         }
     }
 
+    /*
+    * ============================= Console ends =============================
+    */
+
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+    /*
+    * ============================= Display Menu starts =============================
+    */
+
     /**
      * Displays the main menu for the library system.
      */
     private void displayMenu() {
         System.out.println("\n----- The Library Management System Portal -----");
         System.out.println(
-                "\nPress 1 for Adding Book\n" +
-                        "Press 2 for Exiting the portal\n"
+                "\nPress 1 for Adding Book \n" +
+                "Press 2 for Displaying All Books \n" +
+                        "Press 3 for Updating Book \n" +
+                        "Press 4 for Exiting the portal\n"
         );
         System.out.print("Enter your choice: ");
     }
+
+    /*
+    * ============================= Display Menu ends =============================
+    */
+
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+    /*
+    * ============================= Add book starts =============================
+    */
 
     /**
      * Handles adding a new book by gathering details from the user.
@@ -140,4 +173,126 @@ public class ConsoleHandler {
             return -1;  // Return an invalid choice to prompt re-entry
         }
     }
+
+    /*
+    * ============================= Add book ends =============================
+    */
+
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+    /*
+    * ============================= Display all book starts =============================
+    */
+    private void displayAllBooks() {
+        List<Book> books = bookService.getAllBooks(); // Get the list of books from the service
+
+        if (books.isEmpty()) {
+            System.out.println("No books have been added yet.");
+        } else {
+            System.out.println("\n===== List of Books =====");
+            for (Book book : books) {
+                System.out.println(book); // Leverage the custom `toString()` method
+                System.out.println("-------------------------");
+            }
+        }
+    }
+
+    /*
+    * ============================= Display all book ends =============================
+    */
+
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+    /*
+    * ============================= Update book starts =============================
+    */
+
+    private void updateBook() {
+        System.out.print("Enter the ISBN of the book to update: ");
+        String isbn = scanner.nextLine();
+
+        Book bookToUpdate = bookService.getBookByISBN(isbn);
+
+        if (bookToUpdate == null) {
+            System.out.println("Error: No book found with ISBN " + isbn);
+            return;
+        }
+
+        System.out.println("Book found: ");
+        System.out.println(bookToUpdate);
+
+        System.out.println("\nWhat would you like to update?");
+        System.out.println("1. Title");
+        System.out.println("2. Author");
+        System.out.println("3. Genre");
+        System.out.println("4. Publication Year");
+        System.out.println("5. Cancel");
+
+        System.out.print("Enter your choice: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        switch (choice) {
+            case 1:
+                System.out.print("Enter new title: ");
+                String newTitle = scanner.nextLine();
+                try {
+                    bookToUpdate.setTitle(newTitle);
+                    System.out.println("Title updated successfully.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+            case 2:
+                System.out.print("Enter new author: ");
+                String newAuthor = scanner.nextLine();
+                try {
+                    bookToUpdate.setAuthor(newAuthor);
+                    System.out.println("Author updated successfully.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+            case 3:
+                System.out.print("Enter new genre: ");
+                String newGenre = scanner.nextLine();
+                try {
+                    bookToUpdate.setGenre(newGenre);
+                    System.out.println("Genre updated successfully.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+            case 4:
+                System.out.print("Enter new publication year: ");
+                int newYear = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+                try {
+                    bookToUpdate.setPublicationYear(newYear);
+                    System.out.println("Publication year updated successfully.");
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+            case 5:
+                System.out.println("Update canceled.");
+                return;
+            default:
+                System.out.println("Invalid choice. Update canceled.");
+                return;
+        }
+
+        // Update the book in the service
+        bookService.updateBook(bookToUpdate);
+        System.out.println("Book updated successfully.");
+    }
+
+
+    /*
+    * ============================= Update book starts =============================
+    */
+
+
+
+
 }

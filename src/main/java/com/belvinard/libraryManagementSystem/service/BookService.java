@@ -4,6 +4,8 @@ import com.belvinard.libraryManagementSystem.data.LibraryData;
 import com.belvinard.libraryManagementSystem.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public class BookService {
 
     // Dependency on LibraryData, which manages data storage for books
@@ -35,6 +37,42 @@ public class BookService {
         libraryData.addBook(book);  // Delegate book addition to the data layer
 
     }
+    public List<Book> getAllBooks() {
+        return libraryData.getBookCollection(); // Assuming `getBookCollection()` returns the list of books.
+    }
+
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+    /*
+    * ============================= Update book starts =============================
+    */
+
+    public void updateBook(Book updatedBook) {
+        for (int i = 0; i < libraryData.getBookCollection().size(); i++) {
+            if (libraryData.getBookCollection().get(i).getISBN().equals(updatedBook.getISBN())) {
+                libraryData.getBookCollection().set(i, updatedBook);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Book with ISBN " + updatedBook.getISBN() + " not found.");
+    }
+
+    public Book getBookByISBN(String isbn) {
+        return libraryData.getBookCollection()
+                .stream()
+                .filter(book -> book.getISBN().equals(isbn))
+                .findFirst()
+                .orElse(null);
+    }
+
+
+    /*
+    * ============================= Update book starts =============================
+    */
+
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+
 
 
 

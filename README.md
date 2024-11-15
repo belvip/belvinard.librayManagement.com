@@ -11,8 +11,7 @@
 - 🔹 **Looping and Conditionals for Menu Navigation**: Used `while` loops and `switch` cases to manage user choices and keep the application running until the user exits.
 - 🔹 **Error Handling for Duplicate Entries**: Created logic to check for existing ISBNs before adding a book and display appropriate error messages.
 
-These skills provide a strong foundation for developing a robust book management system!
-
+---
 # Skills Learned During the "Display All Books" Stage 📚
 
 ## General Programming Skills
@@ -47,9 +46,54 @@ These skills provide a strong foundation for developing a robust book management
 - 📢 **Edge Case Handling**: Ensured that the application gracefully handled invalid data.
 
 ---
-🌟 **These skills provide a strong foundation for creating robust and maintainable applications. Great job progressing in your project!**
+
+# Skills Learned During the "Update Book" Stage 📚
+
+## 🛠️ Technical Skills
+- **Java Method Design**:
+  - Creating methods like `updateBook` and `getBookByISBN` to manage specific functionality.
+- **Java Streams**:
+  - Using streams to filter and find specific data within a collection.
+  - Employing methods like `filter()`, `findFirst()`, and `orElse()`.
+- **Exception Handling**:
+  - Throwing and handling `IllegalArgumentException` for invalid or not-found cases.
+- **Looping Through Collections**:
+  - Iterating through lists to find and replace specific elements.
+- **Setters with Validation**:
+  - Using setter methods in the `Book` class to ensure updates adhere to business rules.
+
+## 🖥️ Practical Console UI Skills
+- **User Interaction**:
+  - Prompting the user for input to choose and specify what to update.
+- **Input Validation**:
+  - Verifying the correctness of user input and providing feedback for invalid entries.
+- **Update Options**:
+  - Implementing a flexible menu-driven system to allow updates for individual book attributes.
+
+## 🧹 Code Quality and Maintenance
+- **Clean Code Practices**:
+  - Structuring code for readability and reusability.
+  - Adding meaningful comments for better understanding.
+- **Flag Implementation**:
+  - Using flags like `isUpdated` to track if changes were successfully made.
+- **Error Messaging**:
+  - Customizing error messages to provide clear and actionable feedback.
+
+## 🧠 Conceptual Knowledge
+- **Object-Oriented Programming (OOP)**:
+  - Leveraging encapsulation to modify specific attributes of a book.
+- **Business Logic Separation**:
+  - Delegating update operations to the service layer (`BookService`) while keeping the console layer focused on user interaction.
+
+## 💡 Problem-Solving Strategies
+- **Handling Edge Cases**:
+  - Accounting for invalid or no input scenarios during updates.
+  - Ensuring that update operations do not proceed for invalid data.
+
+By mastering these skills, you've built a robust and user-friendly update functionality in your library management system! 🎉
 
 
 
 
-Please list the various skills learned during this first stage for displaying book in markdown format wit emojolis
+
+Please list the various skills learned during this stage for updating book in markdown format wit emojolis

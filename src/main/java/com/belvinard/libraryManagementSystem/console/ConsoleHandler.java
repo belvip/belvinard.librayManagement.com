@@ -41,6 +41,12 @@ public class ConsoleHandler {
                     updateBook();
                     break;
                 case 4:
+                    removeBook(); // Call the method to remove a book
+                    break;
+                case 5:
+                    searchBooks();
+                    break;
+                case 6:
                     running = false;
                     System.out.println("Exiting the system...");
                     break;
@@ -69,7 +75,9 @@ public class ConsoleHandler {
                 "\nPress 1 for Adding Book \n" +
                 "Press 2 for Displaying All Books \n" +
                         "Press 3 for Updating Book \n" +
-                        "Press 4 for Exiting the portal\n"
+                        "Press 4 for Removing Book \n" +
+                        "Press 5 for Searching Book \n" +
+                        "Press 6 for Exiting the portal\n"
         );
         System.out.print("Enter your choice: ");
     }
@@ -207,20 +215,30 @@ public class ConsoleHandler {
     * ============================= Update book starts =============================
     */
 
+    /**
+     * Updates a book's information based on user input.
+     * Allows updating the title, author, genre, or publication year.
+     * Validates inputs and ensures changes are only saved if valid.
+     */
     private void updateBook() {
+        // Prompt the user for the ISBN of the book they want to update
         System.out.print("Enter the ISBN of the book to update: ");
         String isbn = scanner.nextLine();
 
+        // Retrieve the book matching the provided ISBN
         Book bookToUpdate = bookService.getBookByISBN(isbn);
 
+        // Check if the book exists; if not, display an error and exit the method
         if (bookToUpdate == null) {
             System.out.println("Error: No book found with ISBN " + isbn);
             return;
         }
 
+        // Display the book details to the user
         System.out.println("Book found: ");
         System.out.println(bookToUpdate);
 
+        // Provide the user with options for which attribute they want to update
         System.out.println("\nWhat would you like to update?");
         System.out.println("1. Title");
         System.out.println("2. Author");
@@ -228,69 +246,149 @@ public class ConsoleHandler {
         System.out.println("4. Publication Year");
         System.out.println("5. Cancel");
 
+        // Prompt the user for their choice
         System.out.print("Enter your choice: ");
         int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        scanner.nextLine(); // Consume newline character left by nextInt()
 
+        // Flag to determine if any updates were successfully made
+        boolean isUpdated = false;
+
+        // Handle the user's choice
         switch (choice) {
             case 1:
+                // Update the book's title
                 System.out.print("Enter new title: ");
                 String newTitle = scanner.nextLine();
                 try {
                     bookToUpdate.setTitle(newTitle);
-                    System.out.println("Title updated successfully.");
+                    isUpdated = true;
                 } catch (IllegalArgumentException e) {
+                    // Display error message for invalid title
                     System.out.println(e.getMessage());
                 }
                 break;
             case 2:
+                // Update the book's author
                 System.out.print("Enter new author: ");
                 String newAuthor = scanner.nextLine();
                 try {
                     bookToUpdate.setAuthor(newAuthor);
-                    System.out.println("Author updated successfully.");
+                    isUpdated = true;
                 } catch (IllegalArgumentException e) {
+                    // Display error message for invalid author
                     System.out.println(e.getMessage());
                 }
                 break;
             case 3:
+                // Update the book's genre
                 System.out.print("Enter new genre: ");
                 String newGenre = scanner.nextLine();
                 try {
                     bookToUpdate.setGenre(newGenre);
-                    System.out.println("Genre updated successfully.");
+                    isUpdated = true;
                 } catch (IllegalArgumentException e) {
+                    // Display error message for invalid genre
                     System.out.println(e.getMessage());
                 }
                 break;
             case 4:
+                // Update the book's publication year
                 System.out.print("Enter new publication year: ");
                 int newYear = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                scanner.nextLine(); // Consume newline character left by nextInt()
                 try {
                     bookToUpdate.setPublicationYear(newYear);
-                    System.out.println("Publication year updated successfully.");
+                    isUpdated = true;
                 } catch (IllegalArgumentException e) {
+                    // Display error message for invalid year
                     System.out.println(e.getMessage());
                 }
                 break;
             case 5:
+                // Cancel the update operation
                 System.out.println("Update canceled.");
                 return;
             default:
+                // Handle invalid choices
                 System.out.println("Invalid choice. Update canceled.");
                 return;
         }
 
-        // Update the book in the service
-        bookService.updateBook(bookToUpdate);
-        System.out.println("Book updated successfully.");
+        // Save changes only if a valid update was made
+        if (isUpdated) {
+            bookService.updateBook(bookToUpdate);
+            System.out.println("Book updated successfully.");
+        }
+    }
+
+    /*
+    * ============================= Update book ends =============================
+    */
+
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+    /*
+     * ============================= Remove book starts =============================
+     */
+
+    private void removeBook() {
+        System.out.print("Enter the ISBN of the book to remove: ");
+        String isbn = scanner.nextLine();
+
+        // Call the BookService to remove the book by ISBN
+        bookService.removeBookByISBN(isbn);
+    }
+
+    /*
+     * ============================= Remove book ends =============================
+     */
+
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+    /*
+     * ============================= Remove book starts =============================
+     */
+
+    private void searchBooks() {
+        System.out.println("Enter search type (title, author, isbn): ");
+        String searchType = scanner.nextLine(); // title, author, or isbn
+        System.out.println("Enter search query: ");
+        String query = scanner.nextLine(); // query for title, author, or isbn
+
+        System.out.println("Choose search method: ");
+        System.out.println("1. Linear Search");
+        System.out.println("2. Binary Search");
+        int methodChoice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        if (methodChoice == 1) {
+            List<Book> foundBooks = bookService.searchBooksLinear(query, searchType);
+            if (foundBooks.isEmpty()) {
+                System.out.println("No books found with the given query.");
+            } else {
+                System.out.println("Books found:");
+                for (Book book : foundBooks) {
+                    System.out.println(book);
+                }
+            }
+        } else if (methodChoice == 2) {
+            Book foundBook = bookService.searchBookBinary(query, searchType);
+            if (foundBook == null) {
+                System.out.println("No book found with " + searchType + " " + query);
+            } else {
+                System.out.println("Book found: " + foundBook);
+            }
+        } else {
+            System.out.println("Invalid choice.");
+        }
     }
 
 
     /*
-    * ============================= Update book starts =============================
-    */
+     * ============================= Remove book ends =============================
+     */
+
 
 
 

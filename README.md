@@ -146,23 +146,36 @@ By mastering these skills, you've built a robust and user-friendly update functi
 
 ## Skills Learned in Implementing Sorting Functionality 📝
 
-### 1. **Understanding Sorting Algorithms** 🔍
-   - Implementing **Bubble Sort** (Simple but inefficient).
-   - Implementing **Selection Sort** (Efficient for smaller datasets).
-   - Implementing **QuickSort** (Efficient for large datasets).
+1. **Understanding Sorting Algorithms 🔄**
+   - **Bubble Sort**: A simple comparison-based sorting algorithm where adjacent elements are swapped if they are in the wrong order. Used for sorting books by title, author, or publication year.
+   - **Selection Sort**: Selects the smallest or largest element in the unsorted part and swaps it with the element at the correct position. Used for sorting books by title, author, or publication year.
+   - **QuickSort**: A divide-and-conquer algorithm that selects a pivot and recursively sorts the elements into two sublists. Efficient for sorting books by title, author, or publication year.
 
-### 2. **Sorting by Multiple Attributes** 📚
-   - Sorting books by **title**, **author**, and **publication year**.
+2. **Implementing Sorting by Multiple Criteria 📖**
+   - Sorting books by **Title**: Implemented sorting algorithms to organize books alphabetically by title.
+   - Sorting books by **Author**: Implemented sorting algorithms to organize books alphabetically by author.
+   - Sorting books by **Publication Year**: Implemented sorting algorithms to organize books chronologically by publication year.
 
-### 3. **Choosing the Right Sorting Algorithm** 🧠
-   - Understanding when to use **bubble sort**, **selection sort**, or **quick sort**.
+3. **Understanding Algorithm Complexity ⏳**
+   - Bubble Sort and Selection Sort have **O(n^2)** time complexity, making them inefficient for large lists.
+   - QuickSort, with an average case of **O(n log n)**, is more efficient for larger datasets.
 
-### 4. **User Input Handling** 🧑‍💻
-   - Creating a menu system to let users choose the sorting criteria and algorithm.
+4. **Implementing Custom Sorting Methods ⚙️**
+   - You learned how to implement sorting methods within a `SortBooks` class, organizing code to keep sorting logic separate from other business logic in the application.
 
-### 5. **Data Validation and Testing** 🧪
-   - Ensuring that the sorting logic works correctly for various input scenarios and edge cases.
+5. **Interacting with Lists in Java 📋**
+   - You worked with Java `List<Book>` objects and used `get()`, `set()`, and other list operations to implement the sorting functionality.
+   
+6. **Handling User Inputs for Sorting 📲**
+   - Enabled users to choose sorting criteria (title, author, publication year) and select the sorting algorithm to be applied.
+
+7. **Improving User Experience 🎮**
+   - Added flexibility in how the user interacts with the system, providing different sorting options and improving the overall functionality of the library system.
+
+8. **Testing Sorting Mechanisms 🧪**
+   - Tested different sorting methods to ensure correctness and performance, ensuring that the books were being sorted as expected.
 
 
 
-Please list the various skills learned during this stage for Searching book in markdown format wit emojolis
+
+Please list the various skills learned during this stage for Sortining book in markdown format wit emojolis

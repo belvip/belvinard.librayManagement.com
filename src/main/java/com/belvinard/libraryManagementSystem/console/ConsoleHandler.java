@@ -68,15 +68,29 @@ public class ConsoleHandler {
         int year = scanner.nextInt();
         scanner.nextLine();  // Consume newline
 
-        Book book = new Book(title, author, genre, isbn, year);
+        // Debugging output to see the values entered
+        System.out.println("\n========= Details Book entered !: ========== \n");
+        System.out.println("Title: " + title);
+        System.out.println("Author: " + author);
+        System.out.println("Genre: " + genre);
+        System.out.println("ISBN: " + isbn);
+        System.out.println("Year: " + year);
 
         try {
+            Book book = new Book();
+            book.setTitle(title);  // Use setter to validate
+            book.setAuthor(author);  // Use setter to validate
+            book.setGenre(genre);  // Use setter to validate
+            book.setISBN(isbn);  // Use setter to validate
+            book.setPublicationYear(year);  // Use setter to validate
+            // Book book = new Book(title, author, genre, isbn, year);  // Calls the constructor which enforces validation
             bookService.addBook(book);
             System.out.println("Book added successfully.");
         } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());  // This will catch the validation exception
         }
     }
+
 
     /**
      * Retrieves book details from user input, validating each entry.

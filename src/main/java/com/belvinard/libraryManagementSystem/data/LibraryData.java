@@ -22,8 +22,18 @@ public class LibraryData {
      * @param book The Book object to add to the collection.
      */
     public void addBook(Book book) {
-        if (book != null && getBookByISBN(book.getISBN()).isEmpty()) {
-            bookCollection.add(book); // Add book if not already present
+        if (book != null) {
+            // Check if the book's ISBN already exists in the collection
+            boolean exists = bookCollection.stream()
+                    .anyMatch(existingBook -> existingBook.getISBN().equals(book.getISBN()));
+
+            if (exists) {
+                // Throw an exception or display a message indicating ISBN conflict
+                throw new IllegalArgumentException("A book with this ISBN already exists.");
+            }
+
+            // If ISBN is unique, add the book to the collection
+            bookCollection.add(book);
         }
     }
 

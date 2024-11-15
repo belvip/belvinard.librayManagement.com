@@ -56,20 +56,25 @@ public class ConsoleHandler {
      * Will prompt the user to retry if input is invalid.
      */
     private void addBook() {
-        Book book = null;
-        boolean valid = false;
+        System.out.print("Enter book title: ");
+        String title = scanner.nextLine();
+        System.out.print("Enter book author: ");
+        String author = scanner.nextLine();
+        System.out.print("Enter book genre: ");
+        String genre = scanner.nextLine();
+        System.out.print("Enter book ISBN: ");
+        String isbn = scanner.nextLine();
+        System.out.print("Enter publication year: ");
+        int year = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
 
-        while (!valid) {
-            try {
-                book = getBookDetails();
-                // If no exception was thrown, the book is valid
-                valid = true;
-                bookService.addBook(book);
-                System.out.println("Book added successfully.\nReturning to main menu...");
-            } catch (IllegalArgumentException e) {
-                // Catch any validation exceptions and show the error message
-                System.out.println("Error: " + e.getMessage() + " Please try again.");
-            }
+        Book book = new Book(title, author, genre, isbn, year);
+
+        try {
+            bookService.addBook(book);
+            System.out.println("Book added successfully.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 

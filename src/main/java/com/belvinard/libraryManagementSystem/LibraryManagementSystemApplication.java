@@ -3,6 +3,7 @@ package com.belvinard.libraryManagementSystem;
 import com.belvinard.libraryManagementSystem.console.ConsoleHandler;
 import com.belvinard.libraryManagementSystem.data.LibraryData;
 import com.belvinard.libraryManagementSystem.service.BookService;
+import com.belvinard.libraryManagementSystem.service.LibraryService;
 
 import java.util.Scanner;
 

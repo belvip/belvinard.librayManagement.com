@@ -2,6 +2,8 @@ package com.belvinard.libraryManagementSystem.console;
 
 import com.belvinard.libraryManagementSystem.model.Book;
 import com.belvinard.libraryManagementSystem.service.BookService;
+import com.belvinard.libraryManagementSystem.service.LibraryService;
+import com.belvinard.libraryManagementSystem.util.BookSortService;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -10,15 +12,23 @@ import java.util.Scanner;
 
 
 public class ConsoleHandler {
-    private static List<Book> books = new ArrayList<>();
+    public static List<Book> books = new ArrayList<>();
     private final BookService bookService;
     private static Scanner scanner;
+    private final BookSortService bookSortService;
+    private LibraryService libraryService;
+
+    //private LibraryService libraryService;
+
+    
 
 
     public ConsoleHandler(BookService bookService, Scanner scanner) {
         this.bookService = bookService;
-        this.books = bookService.getAllBooks();  // Fetch books from BookService
+        this.books = bookService.getAllBooks();
+        this.libraryService = libraryService;// Fetch books from BookService
         this.scanner = new Scanner(System.in);  // Initialize scanner
+        this.bookSortService = new BookSortService(books);
     }
 
 
@@ -139,6 +149,8 @@ public class ConsoleHandler {
             book.setPublicationYear(year);  // Use setter to validate
             // Book book = new Book(title, author, genre, isbn, year);  // Calls the constructor which enforces validation
             bookService.addBook(book);
+            Book newBook = new Book(title, author, genre, isbn, year);
+            libraryService.addBook(newBook);
             System.out.println("Book added successfully.");
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());  // This will catch the validation exception
@@ -361,14 +373,13 @@ public class ConsoleHandler {
     /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
     /*
-     * ============================= Remove book starts =============================
+     * ============================= Search book starts =============================
      */
-
     private void searchBooks() {
         System.out.println("Enter search type (title, author, isbn): ");
-        String searchType = scanner.nextLine(); // title, author, or isbn
+        String searchType = scanner.nextLine().trim();
         System.out.println("Enter search query: ");
-        String query = scanner.nextLine(); // query for title, author, or isbn
+        String query = scanner.nextLine().trim();
 
         System.out.println("Choose search method: ");
         System.out.println("1. Linear Search");
@@ -376,8 +387,10 @@ public class ConsoleHandler {
         int methodChoice = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
+        System.out.println("Debug: searchType=" + searchType + ", query=" + query + ", methodChoice=" + methodChoice);
+
         if (methodChoice == 1) {
-            List<Book> foundBooks = bookService.searchBooksLinear(query, searchType);
+            List<Book> foundBooks = bookService.searchBooks(query, searchType);
             if (foundBooks.isEmpty()) {
                 System.out.println("No books found with the given query.");
             } else {
@@ -387,11 +400,12 @@ public class ConsoleHandler {
                 }
             }
         } else if (methodChoice == 2) {
-            Book foundBook = bookService.searchBookBinary(query, searchType);
+            Book foundBook = bookService.binarySearchBooks(query, searchType);
             if (foundBook == null) {
-                System.out.println("No book found with " + searchType + " " + query);
+                System.out.println("No books found with the given query.");
             } else {
-                System.out.println("Book found: " + foundBook);
+                System.out.println("Book found:");
+                System.out.println(foundBook);
             }
         } else {
             System.out.println("Invalid choice.");
@@ -399,84 +413,95 @@ public class ConsoleHandler {
     }
 
 
-    /*
-     * ============================= Remove book ends =============================
-     */
 
-    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+    /*
+     * ============================= Search book ends =============================
+     */
 
     /*
      * ============================= Sort book starts =============================
      */
     public void sortBooks() {
+        if (this.libraryService == null) {
+            this.libraryService = new LibraryService(); // Initialize it if not done yet
+        }
+
         System.out.println("How would you like to sort the books?");
         System.out.println("1. Sort by Title");
         System.out.println("2. Sort by Author");
         System.out.println("3. Sort by Publication Year");
+        System.out.println("4. Sort by Genre");
+        System.out.println("5. Sort by ISBN");
         System.out.print("Enter your choice: ");
-        int sortChoice = scanner.nextInt();  // Get sorting choice
-        scanner.nextLine();  // Consume newline
+        int sortChoice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
 
         System.out.println("Which sorting algorithm would you like to use?");
         System.out.println("1. Bubble Sort");
         System.out.println("2. Selection Sort");
         System.out.println("3. QuickSort");
         System.out.print("Enter your choice: ");
-        int algoChoice = scanner.nextInt();  // Get sorting algorithm choice
-        scanner.nextLine();  // Consume newline
+        int algoChoice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        // Fetch the book list from the library service
+        List<Book> books = libraryService.getBooks();
+
+        if (books == null || books.isEmpty()) {
+            System.out.println("No books available to sort.");
+            return;
+        }
 
         switch (sortChoice) {
             case 1: // Sort by Title
-                if (algoChoice == 1) {
-                    BookService.SortBooks.bubbleSortByTitle(books);
-                } else if (algoChoice == 2) {
-                    BookService.SortBooks.selectionSortByTitle(books);
-                } else if (algoChoice == 3) {
-                    BookService.SortBooks.quickSortByTitle(books, 0, books.size() - 1);
-                }
+                if (algoChoice == 1) BookSortService.bubbleSortByTitle(books);
+                else if (algoChoice == 2) BookSortService.selectionSortByTitle(books);
+                else if (algoChoice == 3) BookSortService.quickSortByTitle(books, 0, books.size() - 1);
                 break;
+
             case 2: // Sort by Author
-                if (algoChoice == 1) {
-                    BookService.SortBooks.bubbleSortByAuthor(books);
-                } else if (algoChoice == 2) {
-                    BookService.SortBooks.selectionSortByAuthor(books);
-                } else if (algoChoice == 3) {
-                    BookService.SortBooks.quickSortByAuthor(books, 0, books.size() - 1);
-                }
+                if (algoChoice == 1) BookSortService.bubbleSortByAuthor(books);
+                else if (algoChoice == 2) BookSortService.selectionSortByAuthor(books);
+                else if (algoChoice == 3) BookSortService.quickSortByAuthor(books, 0, books.size() - 1);
                 break;
+
             case 3: // Sort by Publication Year
-                if (algoChoice == 1) {
-                    BookService.SortBooks.bubbleSortByYear(books);
-                } else if (algoChoice == 2) {
-                    BookService.SortBooks.selectionSortByYear(books);
-                } else if (algoChoice == 3) {
-                    BookService.SortBooks.quickSortByYear(books, 0, books.size() - 1);
-                }
+                if (algoChoice == 1) BookSortService.bubbleSortByYear(books);
+                else if (algoChoice == 2) BookSortService.selectionSortByYear(books);
+                else if (algoChoice == 3) BookSortService.quickSortByYear(books, 0, books.size() - 1);
                 break;
+
+            case 4: // Sort by Genre
+                if (algoChoice == 3) BookSortService.quickSortByGenre(books, 0, books.size() - 1);
+                else System.out.println("Only QuickSort is supported for Genre.");
+                break;
+
+            case 5: // Sort by ISBN
+                if (algoChoice == 1) BookSortService.bubbleSortByIsbn(books);
+                else if (algoChoice == 2) BookSortService.selectionSortByIsbn(books);
+                else if (algoChoice == 3) BookSortService.quickSortByIsbn(books, 0, books.size() - 1);
+                break;
+
             default:
                 System.out.println("Invalid choice, returning to the main menu.");
                 return;
         }
 
-        // After sorting, display the sorted books
+        // Display sorted books
         System.out.println("\n===== Sorted List of Books =====");
         for (Book book : books) {
             System.out.println(book);
         }
 
-        // Return to the main menu
-        /* System.out.println("\n----- The Library Management System Portal -----");
-        System.out.println("Press 1 for Adding Book");
-        System.out.println("Press 2 for Displaying All Books");
-        System.out.println("Press 3 for Updating Book");
-        System.out.println("Press 4 for Removing Book");
-        System.out.println("Press 5 for Searching Book");
-        System.out.println("Press 6 for Sorting Book");
-        System.out.println("Press 7 for Exiting the portal"); */
+        System.out.println("Books in the collection: " + books.size());
+
     }
+
+
     /*
-     * =============================Sort book ends =============================
+     * ============================= Sort book ends =============================
      */
+
 
 
 }

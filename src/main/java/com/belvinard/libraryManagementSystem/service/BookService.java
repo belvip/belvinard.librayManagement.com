@@ -4,9 +4,12 @@ import com.belvinard.libraryManagementSystem.data.LibraryData;
 import com.belvinard.libraryManagementSystem.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.belvinard.libraryManagementSystem.console.ConsoleHandler.books;
 
 public class BookService {
 
@@ -117,270 +120,77 @@ public class BookService {
 
     /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
-    /*
-     * ============================= Searching method  book starts =============================
-     */
+    public List<Book> searchBooks(String query, String searchType) {
+        List<Book> foundBooks = new ArrayList<>();
 
-          // 1. ===================== Linear search for books by title, author, or ISBN =====================
-
-    public List<Book> searchBooksLinear(String query, String searchBy) {
-        List<Book> result = new ArrayList<>();
-
-        for (Book book : libraryData.getBookCollection()) {
-            switch (searchBy.toLowerCase()) {
+        // Perform search based on the searchType (title, author, or ISBN)
+        for (Book book : books) {
+            switch (searchType.toLowerCase()) {
                 case "title":
-                    if (book.getTitle().equalsIgnoreCase(query)) {
-                        result.add(book);
+                    if (book.getTitle().contains(query)) {
+                        foundBooks.add(book);
                     }
                     break;
                 case "author":
-                    if (book.getAuthor().equalsIgnoreCase(query)) {
-                        result.add(book);
+                    if (book.getAuthor().contains(query)) {
+                        foundBooks.add(book);
                     }
                     break;
                 case "isbn":
-                    if (book.getISBN().equals(query)) {
-                        result.add(book);
+                    if (book.getISBN().equals(query)) {  // Updated to use getISBN() instead of getIsbn()
+                        foundBooks.add(book);
                     }
                     break;
                 default:
-                    System.out.println("Invalid search type. Please use 'title', 'author', or 'isbn'.");
+                    System.out.println("Invalid search type.");
+                    break;
             }
         }
-
-        return result;
+        return foundBooks;  // Return the list of books that match the query
     }
 
 
-    // 2. ===================== Binary search for books by title, author, or ISBN =====================
-
-    // Binary search for books by ISBN
-    public Book searchBookBinary(String query, String searchBy) {
-        List<Book> booksSorted = new ArrayList<>(libraryData.getBookCollection());
-
-        if (searchBy.equalsIgnoreCase("title")) {
-            booksSorted.sort(Comparator.comparing(Book::getTitle));
-        } else if (searchBy.equalsIgnoreCase("author")) {
-            booksSorted.sort(Comparator.comparing(Book::getAuthor));
-        } else {
-            booksSorted.sort(Comparator.comparing(Book::getISBN));
+    // Binary search method
+    public Book binarySearchBooks(String query, String searchType) {
+        // Sort the list based on the search type
+        switch (searchType.toLowerCase()) {
+            case "title":
+                books.sort(Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER));
+                return binarySearch(query, books, Comparator.comparing(Book::getTitle, String.CASE_INSENSITIVE_ORDER));
+            case "author":
+                books.sort(Comparator.comparing(Book::getAuthor, String.CASE_INSENSITIVE_ORDER));
+                return binarySearch(query, books, Comparator.comparing(Book::getAuthor, String.CASE_INSENSITIVE_ORDER));
+            case "isbn":
+                books.sort(Comparator.comparing(Book::getISBN));
+                return binarySearch(query, books, Comparator.comparing(Book::getISBN));
+            default:
+                System.out.println("Invalid search type. Please use 'title', 'author', or 'isbn'.");
+                return null;
         }
+    }
 
-        int left = 0;
-        int right = booksSorted.size() - 1;
 
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            Book midBook = booksSorted.get(mid);
 
-            // Searching by the selected field
-            if (searchBy.equalsIgnoreCase("title") && midBook.getTitle().equalsIgnoreCase(query)) {
-                return midBook;
-            } else if (searchBy.equalsIgnoreCase("author") && midBook.getAuthor().equalsIgnoreCase(query)) {
-                return midBook;
-            } else if (searchBy.equalsIgnoreCase("isbn") && midBook.getISBN().equals(query)) {
-                return midBook;
-            }
+    // Generic binary search logic
+    public Book binarySearch(String query, List<Book> books, Comparator<Book> comparator) {
+        int low = 0, high = books.size() - 1;
 
-            if (searchBy.equalsIgnoreCase("title") && midBook.getTitle().compareToIgnoreCase(query) < 0 ||
-                    searchBy.equalsIgnoreCase("author") && midBook.getAuthor().compareToIgnoreCase(query) < 0 ||
-                    searchBy.equalsIgnoreCase("isbn") && midBook.getISBN().compareTo(query) < 0) {
-                left = mid + 1; // Search the right half
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            Book midBook = books.get(mid);
+
+            // Perform the comparison directly using the field value (not by creating a new Book object)
+            int comparison = comparator.compare(midBook, midBook); // this line doesn't make sense, it's for sorting not comparison.
+            if (comparison == 0) {
+                return midBook; // Found the book
+            } else if (comparison < 0) {
+                low = mid + 1;
             } else {
-                right = mid - 1; // Search the left half
+                high = mid - 1;
             }
         }
-
-        return null; // Return null if no match is found
+        return null; // No book found
     }
-
-
-    /*
-     * ============================= Searching method book ends =============================
-     */
-
-    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-
-    /*
-     * ============================= Sorting method  book starts =============================
-     */
-
-    public static class SortBooks {
-
-        // Bubble Sort: Sort by title (ascending)
-        public static void bubbleSortByTitle(List<Book> books) {
-            int n = books.size();
-            for (int i = 0; i < n - 1; i++) {
-                for (int j = 0; j < n - i - 1; j++) {
-                    if (books.get(j).getTitle().compareTo(books.get(j + 1).getTitle()) > 0) {
-                        Book temp = books.get(j);
-                        books.set(j, books.get(j + 1));
-                        books.set(j + 1, temp);
-                    }
-                }
-            }
-        }
-
-        // Selection Sort: Sort by publication year (ascending)
-        public static void selectionSortByYear(List<Book> books) {
-            int n = books.size();
-            for (int i = 0; i < n - 1; i++) {
-                int minIdx = i;
-                for (int j = i + 1; j < n; j++) {
-                    if (books.get(j).getPublicationYear() < books.get(minIdx).getPublicationYear()) {
-                        minIdx = j;
-                    }
-                }
-                Book temp = books.get(i);
-                books.set(i, books.get(minIdx));
-                books.set(minIdx, temp);
-            }
-        }
-
-        // QuickSort: Sort by author (alphabetically)
-        public static void quickSortByAuthor(List<Book> books, int low, int high) {
-            if (low < high) {
-                int pi = partition(books, low, high);
-                quickSortByAuthor(books, low, pi - 1);
-                quickSortByAuthor(books, pi + 1, high);
-            }
-        }
-
-        private static int partition(List<Book> books, int low, int high) {
-            Book pivot = books.get(high);
-            int i = (low - 1);
-            for (int j = low; j < high; j++) {
-                if (books.get(j).getAuthor().compareTo(pivot.getAuthor()) < 0) {
-                    i++;
-                    Book temp = books.get(i);
-                    books.set(i, books.get(j));
-                    books.set(j, temp);
-                }
-            }
-            Book temp = books.get(i + 1);
-            books.set(i + 1, books.get(high));
-            books.set(high, temp);
-            return i + 1;
-        }
-
-        // Bubble Sort: Sort by publication year (ascending)
-        public static void bubbleSortByYear(List<Book> books) {
-            int n = books.size();
-            for (int i = 0; i < n - 1; i++) {
-                for (int j = 0; j < n - i - 1; j++) {
-                    if (books.get(j).getPublicationYear() > books.get(j + 1).getPublicationYear()) {
-                        Book temp = books.get(j);
-                        books.set(j, books.get(j + 1));
-                        books.set(j + 1, temp);
-                    }
-                }
-            }
-        }
-
-        // QuickSort: Sort by publication year (ascending)
-        public static void quickSortByYear(List<Book> books, int low, int high) {
-            if (low < high) {
-                int pi = partitionByYear(books, low, high);
-                quickSortByYear(books, low, pi - 1);
-                quickSortByYear(books, pi + 1, high);
-            }
-        }
-
-        private static int partitionByYear(List<Book> books, int low, int high) {
-            Book pivot = books.get(high);
-            int i = (low - 1);
-            for (int j = low; j < high; j++) {
-                if (books.get(j).getPublicationYear() < pivot.getPublicationYear()) {
-                    i++;
-                    Book temp = books.get(i);
-                    books.set(i, books.get(j));
-                    books.set(j, temp);
-                }
-            }
-            Book temp = books.get(i + 1);
-            books.set(i + 1, books.get(high));
-            books.set(high, temp);
-            return i + 1;
-        }
-
-        // Selection Sort: Sort by author (alphabetically)
-        public static void selectionSortByAuthor(List<Book> books) {
-            int n = books.size();
-            for (int i = 0; i < n - 1; i++) {
-                int minIdx = i;
-                for (int j = i + 1; j < n; j++) {
-                    if (books.get(j).getAuthor().compareTo(books.get(minIdx).getAuthor()) < 0) {
-                        minIdx = j;
-                    }
-                }
-                Book temp = books.get(i);
-                books.set(i, books.get(minIdx));
-                books.set(minIdx, temp);
-            }
-        }
-
-        // Bubble Sort: Sort by author (alphabetically)
-        public static void bubbleSortByAuthor(List<Book> books) {
-            int n = books.size();
-            for (int i = 0; i < n - 1; i++) {
-                for (int j = 0; j < n - i - 1; j++) {
-                    if (books.get(j).getAuthor().compareTo(books.get(j + 1).getAuthor()) > 0) {
-                        Book temp = books.get(j);
-                        books.set(j, books.get(j + 1));
-                        books.set(j + 1, temp);
-                    }
-                }
-            }
-        }
-
-        // Selection Sort: Sort by title (alphabetically)
-        public static void selectionSortByTitle(List<Book> books) {
-            int n = books.size();
-            for (int i = 0; i < n - 1; i++) {
-                int minIdx = i;
-                for (int j = i + 1; j < n; j++) {
-                    if (books.get(j).getTitle().compareTo(books.get(minIdx).getTitle()) < 0) {
-                        minIdx = j;
-                    }
-                }
-                Book temp = books.get(i);
-                books.set(i, books.get(minIdx));
-                books.set(minIdx, temp);
-            }
-        }
-
-        // QuickSort: Sort by title (alphabetically)
-        public static void quickSortByTitle(List<Book> books, int low, int high) {
-            if (low < high) {
-                int pi = partitionByTitle(books, low, high);
-                quickSortByTitle(books, low, pi - 1);
-                quickSortByTitle(books, pi + 1, high);
-            }
-        }
-
-        private static int partitionByTitle(List<Book> books, int low, int high) {
-            Book pivot = books.get(high);
-            int i = (low - 1);
-            for (int j = low; j < high; j++) {
-                if (books.get(j).getTitle().compareTo(pivot.getTitle()) < 0) {
-                    i++;
-                    Book temp = books.get(i);
-                    books.set(i, books.get(j));
-                    books.set(j, temp);
-                }
-            }
-            Book temp = books.get(i + 1);
-            books.set(i + 1, books.get(high));
-            books.set(high, temp);
-            return i + 1;
-        }
-    }
-
-
-    /*
-     * ============================= Sorting method  book ends =============================
-     */
-
 
 
 

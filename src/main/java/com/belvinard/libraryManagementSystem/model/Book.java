@@ -15,13 +15,14 @@ public class Book {
     private String title;
     private String author;
     private String genre;
-    private String ISBN;
+    private String ISBN; // Single field for ISBN
     private int publicationYear;
 
     // Allowed genres for validation
-    private static final Set<String> ALLOWED_GENRES = new HashSet<>(Set.of(
-            "Front-end Development", "Web Design", "Software Development", "Full-stack Development", "Back-end Development"
-    ));
+    private static final Set<String> ALLOWED_GENRES = Set.of(
+            "Front-end Development", "Web Design", "Software Development",
+            "Full-stack Development", "Back-end Development"
+    );
 
     @Override
     public String toString() {
@@ -30,7 +31,6 @@ public class Book {
     }
 
     // Setters with validation
-
     public void setTitle(String title) {
         if (title == null || title.trim().isEmpty() || title.length() < 3) {
             throw new IllegalArgumentException("Invalid title. It must be at least 3 characters long and not empty.");
@@ -45,7 +45,6 @@ public class Book {
         if (author == null || author.trim().isEmpty()) {
             throw new IllegalArgumentException("Author cannot be empty.");
         }
-        // Ensure the author is at least 3 characters long
         if (author.length() < 3) {
             throw new IllegalArgumentException("Author name must be at least 3 characters long.");
         }
@@ -54,7 +53,6 @@ public class Book {
         }
         this.author = author;
     }
-
 
     public void setISBN(String ISBN) {
         if (ISBN == null || !Pattern.matches("\\d{5}", ISBN)) {

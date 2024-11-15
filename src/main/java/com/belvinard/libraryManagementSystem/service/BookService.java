@@ -199,6 +199,188 @@ public class BookService {
      * ============================= Searching method book ends =============================
      */
 
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+    /*
+     * ============================= Sorting method  book starts =============================
+     */
+
+    public static class SortBooks {
+
+        // Bubble Sort: Sort by title (ascending)
+        public static void bubbleSortByTitle(List<Book> books) {
+            int n = books.size();
+            for (int i = 0; i < n - 1; i++) {
+                for (int j = 0; j < n - i - 1; j++) {
+                    if (books.get(j).getTitle().compareTo(books.get(j + 1).getTitle()) > 0) {
+                        Book temp = books.get(j);
+                        books.set(j, books.get(j + 1));
+                        books.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+
+        // Selection Sort: Sort by publication year (ascending)
+        public static void selectionSortByYear(List<Book> books) {
+            int n = books.size();
+            for (int i = 0; i < n - 1; i++) {
+                int minIdx = i;
+                for (int j = i + 1; j < n; j++) {
+                    if (books.get(j).getPublicationYear() < books.get(minIdx).getPublicationYear()) {
+                        minIdx = j;
+                    }
+                }
+                Book temp = books.get(i);
+                books.set(i, books.get(minIdx));
+                books.set(minIdx, temp);
+            }
+        }
+
+        // QuickSort: Sort by author (alphabetically)
+        public static void quickSortByAuthor(List<Book> books, int low, int high) {
+            if (low < high) {
+                int pi = partition(books, low, high);
+                quickSortByAuthor(books, low, pi - 1);
+                quickSortByAuthor(books, pi + 1, high);
+            }
+        }
+
+        private static int partition(List<Book> books, int low, int high) {
+            Book pivot = books.get(high);
+            int i = (low - 1);
+            for (int j = low; j < high; j++) {
+                if (books.get(j).getAuthor().compareTo(pivot.getAuthor()) < 0) {
+                    i++;
+                    Book temp = books.get(i);
+                    books.set(i, books.get(j));
+                    books.set(j, temp);
+                }
+            }
+            Book temp = books.get(i + 1);
+            books.set(i + 1, books.get(high));
+            books.set(high, temp);
+            return i + 1;
+        }
+
+        // Bubble Sort: Sort by publication year (ascending)
+        public static void bubbleSortByYear(List<Book> books) {
+            int n = books.size();
+            for (int i = 0; i < n - 1; i++) {
+                for (int j = 0; j < n - i - 1; j++) {
+                    if (books.get(j).getPublicationYear() > books.get(j + 1).getPublicationYear()) {
+                        Book temp = books.get(j);
+                        books.set(j, books.get(j + 1));
+                        books.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+
+        // QuickSort: Sort by publication year (ascending)
+        public static void quickSortByYear(List<Book> books, int low, int high) {
+            if (low < high) {
+                int pi = partitionByYear(books, low, high);
+                quickSortByYear(books, low, pi - 1);
+                quickSortByYear(books, pi + 1, high);
+            }
+        }
+
+        private static int partitionByYear(List<Book> books, int low, int high) {
+            Book pivot = books.get(high);
+            int i = (low - 1);
+            for (int j = low; j < high; j++) {
+                if (books.get(j).getPublicationYear() < pivot.getPublicationYear()) {
+                    i++;
+                    Book temp = books.get(i);
+                    books.set(i, books.get(j));
+                    books.set(j, temp);
+                }
+            }
+            Book temp = books.get(i + 1);
+            books.set(i + 1, books.get(high));
+            books.set(high, temp);
+            return i + 1;
+        }
+
+        // Selection Sort: Sort by author (alphabetically)
+        public static void selectionSortByAuthor(List<Book> books) {
+            int n = books.size();
+            for (int i = 0; i < n - 1; i++) {
+                int minIdx = i;
+                for (int j = i + 1; j < n; j++) {
+                    if (books.get(j).getAuthor().compareTo(books.get(minIdx).getAuthor()) < 0) {
+                        minIdx = j;
+                    }
+                }
+                Book temp = books.get(i);
+                books.set(i, books.get(minIdx));
+                books.set(minIdx, temp);
+            }
+        }
+
+        // Bubble Sort: Sort by author (alphabetically)
+        public static void bubbleSortByAuthor(List<Book> books) {
+            int n = books.size();
+            for (int i = 0; i < n - 1; i++) {
+                for (int j = 0; j < n - i - 1; j++) {
+                    if (books.get(j).getAuthor().compareTo(books.get(j + 1).getAuthor()) > 0) {
+                        Book temp = books.get(j);
+                        books.set(j, books.get(j + 1));
+                        books.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+
+        // Selection Sort: Sort by title (alphabetically)
+        public static void selectionSortByTitle(List<Book> books) {
+            int n = books.size();
+            for (int i = 0; i < n - 1; i++) {
+                int minIdx = i;
+                for (int j = i + 1; j < n; j++) {
+                    if (books.get(j).getTitle().compareTo(books.get(minIdx).getTitle()) < 0) {
+                        minIdx = j;
+                    }
+                }
+                Book temp = books.get(i);
+                books.set(i, books.get(minIdx));
+                books.set(minIdx, temp);
+            }
+        }
+
+        // QuickSort: Sort by title (alphabetically)
+        public static void quickSortByTitle(List<Book> books, int low, int high) {
+            if (low < high) {
+                int pi = partitionByTitle(books, low, high);
+                quickSortByTitle(books, low, pi - 1);
+                quickSortByTitle(books, pi + 1, high);
+            }
+        }
+
+        private static int partitionByTitle(List<Book> books, int low, int high) {
+            Book pivot = books.get(high);
+            int i = (low - 1);
+            for (int j = low; j < high; j++) {
+                if (books.get(j).getTitle().compareTo(pivot.getTitle()) < 0) {
+                    i++;
+                    Book temp = books.get(i);
+                    books.set(i, books.get(j));
+                    books.set(j, temp);
+                }
+            }
+            Book temp = books.get(i + 1);
+            books.set(i + 1, books.get(high));
+            books.set(high, temp);
+            return i + 1;
+        }
+    }
+
+
+    /*
+     * ============================= Sorting method  book ends =============================
+     */
+
 
 
 

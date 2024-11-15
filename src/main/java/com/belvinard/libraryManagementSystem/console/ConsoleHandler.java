@@ -2,18 +2,26 @@ package com.belvinard.libraryManagementSystem.console;
 
 import com.belvinard.libraryManagementSystem.model.Book;
 import com.belvinard.libraryManagementSystem.service.BookService;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-@Data
-@AllArgsConstructor
+
 public class ConsoleHandler {
+    private static List<Book> books = new ArrayList<>();
     private final BookService bookService;
-    private final Scanner scanner;
+    private static Scanner scanner;
+
+
+    public ConsoleHandler(BookService bookService, Scanner scanner) {
+        this.bookService = bookService;
+        this.books = bookService.getAllBooks();  // Fetch books from BookService
+        this.scanner = new Scanner(System.in);  // Initialize scanner
+    }
+
+
 
     /*
     * ============================= Console starts =============================
@@ -47,11 +55,15 @@ public class ConsoleHandler {
                     searchBooks();
                     break;
                 case 6:
+                    sortBooks();
+                    break;
+                case 7:
                     running = false;
                     System.out.println("Exiting the system...");
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
+                    return;
             }
         }
     }
@@ -77,7 +89,8 @@ public class ConsoleHandler {
                         "Press 3 for Updating Book \n" +
                         "Press 4 for Removing Book \n" +
                         "Press 5 for Searching Book \n" +
-                        "Press 6 for Exiting the portal\n"
+                        "Press 6 for Sorting Book \n" +
+                        "Press 7 for Exiting the portal\n"
         );
         System.out.print("Enter your choice: ");
     }
@@ -178,7 +191,8 @@ public class ConsoleHandler {
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a valid number.");
             scanner.nextLine();  // Clear invalid input
-            return -1;  // Return an invalid choice to prompt re-entry
+            // return -1;  // Return an invalid choice to prompt re-entry
+            return scanner.nextInt();
         }
     }
 
@@ -389,8 +403,80 @@ public class ConsoleHandler {
      * ============================= Remove book ends =============================
      */
 
+    /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
 
+    /*
+     * ============================= Sort book starts =============================
+     */
+    public void sortBooks() {
+        System.out.println("How would you like to sort the books?");
+        System.out.println("1. Sort by Title");
+        System.out.println("2. Sort by Author");
+        System.out.println("3. Sort by Publication Year");
+        System.out.print("Enter your choice: ");
+        int sortChoice = scanner.nextInt();  // Get sorting choice
+        scanner.nextLine();  // Consume newline
 
+        System.out.println("Which sorting algorithm would you like to use?");
+        System.out.println("1. Bubble Sort");
+        System.out.println("2. Selection Sort");
+        System.out.println("3. QuickSort");
+        System.out.print("Enter your choice: ");
+        int algoChoice = scanner.nextInt();  // Get sorting algorithm choice
+        scanner.nextLine();  // Consume newline
+
+        switch (sortChoice) {
+            case 1: // Sort by Title
+                if (algoChoice == 1) {
+                    BookService.SortBooks.bubbleSortByTitle(books);
+                } else if (algoChoice == 2) {
+                    BookService.SortBooks.selectionSortByTitle(books);
+                } else if (algoChoice == 3) {
+                    BookService.SortBooks.quickSortByTitle(books, 0, books.size() - 1);
+                }
+                break;
+            case 2: // Sort by Author
+                if (algoChoice == 1) {
+                    BookService.SortBooks.bubbleSortByAuthor(books);
+                } else if (algoChoice == 2) {
+                    BookService.SortBooks.selectionSortByAuthor(books);
+                } else if (algoChoice == 3) {
+                    BookService.SortBooks.quickSortByAuthor(books, 0, books.size() - 1);
+                }
+                break;
+            case 3: // Sort by Publication Year
+                if (algoChoice == 1) {
+                    BookService.SortBooks.bubbleSortByYear(books);
+                } else if (algoChoice == 2) {
+                    BookService.SortBooks.selectionSortByYear(books);
+                } else if (algoChoice == 3) {
+                    BookService.SortBooks.quickSortByYear(books, 0, books.size() - 1);
+                }
+                break;
+            default:
+                System.out.println("Invalid choice, returning to the main menu.");
+                return;
+        }
+
+        // After sorting, display the sorted books
+        System.out.println("\n===== Sorted List of Books =====");
+        for (Book book : books) {
+            System.out.println(book);
+        }
+
+        // Return to the main menu
+        System.out.println("\n----- The Library Management System Portal -----");
+        System.out.println("Press 1 for Adding Book");
+        System.out.println("Press 2 for Displaying All Books");
+        System.out.println("Press 3 for Updating Book");
+        System.out.println("Press 4 for Removing Book");
+        System.out.println("Press 5 for Searching Book");
+        System.out.println("Press 6 for Sorting Book");
+        System.out.println("Press 7 for Exiting the portal");
+    }
+    /*
+     * =============================Sort book ends =============================
+     */
 
 
 }

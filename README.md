@@ -93,7 +93,76 @@
 By mastering these skills, you've built a robust and user-friendly update functionality in your library management system! 🎉
 
 
+---
+
+## Skills Learned in Implementing Book Search Functionality 📚🔍
+
+### 1. **Searching by Different Attributes** 🏷️
+   - Ability to implement search functionality by different book attributes:
+     - **Title** 🏷️
+     - **Author** ✍️
+     - **ISBN** 📘
+
+### 2. **Implementing Linear Search** 🔄
+   - Understanding how to implement **linear search** to find books based on a search query.
+   - **Linear search** checks every book sequentially to match the search criteria.
+   
+### 3. **Implementing Binary Search** 🔢
+   - Learning to apply **binary search** for faster search through sorted book data.
+   - **Binary search** splits the data in half to reduce the search space efficiently.
+
+### 4. **Handling Case Insensitivity** 🔠
+   - Implementing **case-insensitive** searches to ensure the search is not affected by upper/lowercase differences.
+
+### 5. **Sorting Data for Binary Search** 📊
+   - Sorting book data before applying binary search based on the selected attribute (e.g., title, author, or ISBN).
+   - Understanding the importance of sorted data for binary search efficiency.
+
+### 6. **Input Validation** 📝
+   - Validating user input for **search type** (title, author, ISBN) and **search query**.
+   - Ensuring that invalid inputs are handled properly to avoid errors.
+
+### 7. **Displaying Search Results** 💻
+   - Showing results to users with proper formatting for clarity.
+   - Informing users when no books match the search query.
+
+### 8. **Improving User Interface** 🖥️
+   - Enhancing the user interface to allow users to choose between **linear search** and **binary search**.
+   - Making the system more interactive and user-friendly by providing clear options.
+
+### 9. **Debugging Search Functionality** 🐞
+   - Troubleshooting issues with search results and refining the logic to ensure accuracy.
+   - Handling edge cases, such as empty search results or invalid search criteria.
+
+---
+
+🔧 **Tools & Techniques Used:**
+   - **Java Collections** (List, ArrayList) 🗂️
+   - **Sorting Algorithms** 🧑‍💻
+   - **String Matching** and **Comparison** 🔍
+   - **Conditional Statements** for flow control 🛠️
+
+---
+
+## Skills Learned in Implementing Sorting Functionality 📝
+
+### 1. **Understanding Sorting Algorithms** 🔍
+   - Implementing **Bubble Sort** (Simple but inefficient).
+   - Implementing **Selection Sort** (Efficient for smaller datasets).
+   - Implementing **QuickSort** (Efficient for large datasets).
+
+### 2. **Sorting by Multiple Attributes** 📚
+   - Sorting books by **title**, **author**, and **publication year**.
+
+### 3. **Choosing the Right Sorting Algorithm** 🧠
+   - Understanding when to use **bubble sort**, **selection sort**, or **quick sort**.
+
+### 4. **User Input Handling** 🧑‍💻
+   - Creating a menu system to let users choose the sorting criteria and algorithm.
+
+### 5. **Data Validation and Testing** 🧪
+   - Ensuring that the sorting logic works correctly for various input scenarios and edge cases.
 
 
 
-Please list the various skills learned during this stage for updating book in markdown format wit emojolis
+Please list the various skills learned during this stage for Searching book in markdown format wit emojolis

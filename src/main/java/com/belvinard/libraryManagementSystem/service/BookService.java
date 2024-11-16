@@ -5,40 +5,44 @@ import com.belvinard.libraryManagementSystem.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class BookService {
 
     private final LibraryData libraryData;
-    private List<Book> bookCollection;  // Pas besoin de null-check, initialisé dans le constructeur
+    //private List<Book> bookCollection;
+    private Map<String, Book> bookCollection;
+// Pas besoin de null-check, initialisé dans le constructeur
 
     @Autowired
     public BookService(LibraryData libraryData) {
         this.libraryData = libraryData;
-        this.bookCollection = new ArrayList<>();  // Initialisation ici
+        this.bookCollection = new HashMap<>();
+        // this.bookCollection = new ArrayList<>();  // Initialisation ici
     }
 
     // Méthode pour ajouter un livre
     public void addBook(Book book) {
-        if (book != null) {
-            bookCollection.add(book);  // Ajouter le livre à la collection
-        } else {
-            throw new IllegalArgumentException("Book cannot be null.");
+        // Vérification si l'ISBN existe déjà dans la collection
+        if (bookCollection.containsKey(book.getISBN())) {
+            throw new IllegalArgumentException("A book with ISBN " + book.getISBN() + " already exists.");
         }
+        // Ajouter le livre à la collection en utilisant son ISBN comme clé
+        bookCollection.put(book.getISBN(), book);
     }
 
     // Lister tous les livres
     public List<Book> listBooks() {
-        return bookCollection;
+        // Convertir la Map en une List pour l'affichage
+        return new ArrayList<>(bookCollection.values());
     }
+
 
     // Méthode pour obtenir la liste de tous les livres
     public List<Book> getAllBooks() {
-        return bookCollection;
+        // Convertir les livres de la Map en une List
+        return new ArrayList<>(bookCollection.values());
     }
 
     // Mettre à jour un livre

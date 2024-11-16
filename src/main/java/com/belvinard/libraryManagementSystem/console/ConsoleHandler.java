@@ -23,13 +23,14 @@ public class ConsoleHandler {
     
 
 
-    public ConsoleHandler(BookService bookService, Scanner scanner) {
+    public ConsoleHandler(BookService bookService, LibraryService libraryService,Scanner scanner) {
         this.bookService = bookService;
         this.books = bookService.getAllBooks();
         this.libraryService = libraryService;// Fetch books from BookService
         this.scanner = new Scanner(System.in);  // Initialize scanner
         this.bookSortService = new BookSortService(books);
     }
+
 
 
 
@@ -130,9 +131,8 @@ public class ConsoleHandler {
         String isbn = scanner.nextLine();
         System.out.print("Enter publication year: ");
         int year = scanner.nextInt();
-        scanner.nextLine();  // Consume newline
+        scanner.nextLine(); // Consume newline
 
-        // Debugging output to see the values entered
         System.out.println("\n========= Details Book entered : ========== \n");
         System.out.println("Book Title: " + title);
         System.out.println("Book Author: " + author);
@@ -141,19 +141,11 @@ public class ConsoleHandler {
         System.out.println("Book Year: " + year);
 
         try {
-            Book book = new Book();
-            book.setTitle(title);  // Use setter to validate
-            book.setAuthor(author);  // Use setter to validate
-            book.setGenre(genre);  // Use setter to validate
-            book.setISBN(isbn);  // Use setter to validate
-            book.setPublicationYear(year);  // Use setter to validate
-            // Book book = new Book(title, author, genre, isbn, year);  // Calls the constructor which enforces validation
-            bookService.addBook(book);
-            Book newBook = new Book(title, author, genre, isbn, year);
-            libraryService.addBook(newBook);
+            Book book = new Book(title, author, genre, isbn, year);
+            libraryService.addBook(book); // Use libraryService for adding the book
             System.out.println("Book added successfully.");
         } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());  // This will catch the validation exception
+            System.out.println("Error: " + e.getMessage());
         }
     }
 

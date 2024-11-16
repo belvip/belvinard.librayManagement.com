@@ -14,14 +14,17 @@ import java.util.Scanner;
 public class LibraryManagementSystemApplication {
 
     public static void main(String[] args) {
+        // Create a shared instance of LibraryData
         LibraryData libraryData = new LibraryData();
+
         BookService bookService = new BookService(libraryData);
+        LibraryService libraryService = new LibraryService();
 
         // Create a Scanner instance
         Scanner scanner = new Scanner(System.in);
 
-        // Pass both BookService and Scanner to the ConsoleHandler constructor
-        ConsoleHandler consoleHandler = new ConsoleHandler(bookService, scanner);
+        // Pass services and Scanner to ConsoleHandler constructor
+        ConsoleHandler consoleHandler = new ConsoleHandler(bookService, libraryService, scanner);
         consoleHandler.start();
 
         // Close the scanner when the application exits

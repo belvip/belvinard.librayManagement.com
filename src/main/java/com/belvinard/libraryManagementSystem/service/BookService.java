@@ -12,7 +12,8 @@ public class BookService {
 
     private final LibraryData libraryData;
     //private List<Book> bookCollection;
-    private Map<String, Book> bookCollection;
+    // private Map<String, Book> bookCollection;
+    private Map<String, Book> bookCollection = new HashMap<>();
 // Pas besoin de null-check, initialisé dans le constructeur
 
     @Autowired
@@ -46,7 +47,7 @@ public class BookService {
     }
 
     // Mettre à jour un livre
-    public void updateBook(Book updatedBook) {
+    /*public void updateBook(Book updatedBook) {
         Book existingBook = getBookByISBN(updatedBook.getISBN());
         if (existingBook != null) {
             // Remplacer le livre existant par le livre mis à jour
@@ -66,6 +67,19 @@ public class BookService {
                 .filter(book -> book.getISBN().equals(isbn))
                 .findFirst()
                 .orElse(null);  // Retourne null si aucun livre n'est trouvé
+    } */
+
+    // Méthode pour obtenir un livre par ISBN
+    public Book getBookByISBN(String isbn) {
+        return bookCollection.get(isbn);  // Retourne le livre associé à l'ISBN
+    }
+
+    // Méthode pour mettre à jour un livre
+    public void updateBook(Book updatedBook) {
+        if (!bookCollection.containsKey(updatedBook.getISBN())) {
+            throw new IllegalArgumentException("No book found with ISBN " + updatedBook.getISBN());
+        }
+        bookCollection.put(updatedBook.getISBN(), updatedBook);  // Met à jour le livre dans le Map
     }
 
     // Supprimer un livre par ISBN
